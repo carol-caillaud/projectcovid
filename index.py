@@ -1,12 +1,11 @@
 from flask import Flask
-
-app = Flask(__name__)
-
-import matplotlib.pyplot as plt, mpld3
+import matplotlib.pyplot as plt; plt.rcdefaults()
 import requests
 import json
+import mpld3
 import numpy as np
 
+app = Flask(__name__)
 
 def create_graph():
     ca = requests.get('https://api.covidtracking.com/v1/states/ca/current.json')
@@ -37,5 +36,5 @@ def create_graph():
 
 
 @app.route("/")
-def hello_world():
+def graph():
     return "<h1>New York and California covid cases currently</h1>" + create_graph()

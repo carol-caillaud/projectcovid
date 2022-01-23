@@ -1,10 +1,15 @@
-import matplotlib.pyplot 
-meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho']
-valores = [105235, 107697, 110256, 109236, 108859, 109986]
-matplotlib.pyplot.plot(meses, valores, color='red', marker='o')
-#matplotlib.pyplot.bar(meses, valores)
-matplotlib.pyplot.ylim(100000, 120000)
-matplotlib.pyplot.title('Faturamento no primeiro semestre de 2017')
-matplotlib.pyplot.xlabel('Meses')
-matplotlib.pyplot.ylabel('Faturamento em R$')
-matplotlib.pyplot.show()
+import matplotlib.pyplot as plt; plt.rcdefaults()
+import numpy as np
+import matplotlib.pyplot as plt
+
+objects = ('Python', 'C++', 'Java', 'Perl', 'Scala', 'Lisp')
+y_pos = np.arange(len(objects))
+performance = [10,8,6,4,2,1]
+
+plt.bar(y_pos, performance, align='center', alpha=0.5)
+plt.xticks(y_pos, objects)
+plt.yticks(y_pos, objects)
+plt.ylabel('Usage')
+plt.title('Programming language usage')
+
+plt.show()
