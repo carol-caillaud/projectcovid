@@ -5,7 +5,7 @@ import json
 import mpld3
 import numpy as np
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='')
 
 def create_graph():
     ca = requests.get('https://api.covidtracking.com/v1/states/ca/current.json')
@@ -13,28 +13,27 @@ def create_graph():
     ca_data = json.loads(ca.content.decode('utf-8'))
     ny_data = json.loads(ny.content.decode('utf-8'))
 
-    np.random.seed(19680801)
-
     plt.rcdefaults()
     fig, ax = plt.subplots()
 
     # Example data
-    ax.set_title('axes title')
-    states = ('NY', 'CA')
+    states = ['NY', 'CA']
     y_pos = np.arange(len(states))
+    print("y_pos: ", y_pos)
     covid_cases = [ca_data['positive'], ny_data['positive']]
-    error = np.random.rand(len(states))
 
-    ax.barh(y_pos, covid_cases, xerr=error, align='center')
-    ax.set_yticks(y_pos)
+    ax.barh(y_pos, covid_cases, align='center')
+    ax.set_yticks(y_pos, labels=('NY', 'CA'))
     ax.text(3, 8, 'boxed italics text in data coords', style='italic',
             bbox={'facecolor': 'red', 'alpha': 0.5, 'pad': 10})
-    ax.set_xlabel('States')
+    ax.set_xlabel('Cases')
     ax.set_title('Covid cases in the E.U.A')
 
-    return mpld3.fig_to_html(fig)
+    return fig.savefig('a.png') 
 
 
 @app.route("/")
 def graph():
-    return "<h1>New York and California covid cases currently</h1>" + create_graph()
+    create_graph()
+    f = open("plot.html", "r")
+    return f.read() 
